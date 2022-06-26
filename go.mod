@@ -3,10 +3,12 @@ module ml-cicd
 go 1.18
 
 require (
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	// github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/docker/docker v20.10.17+incompatible
 	github.com/google/uuid v1.2.0
 )
+
+require github.com/golang-jwt/jwt v3.2.2+incompatible
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
