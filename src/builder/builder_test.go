@@ -10,32 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// // Tests the normal workflow which succeeds
-// func TestBuildSuccess(t *testing.T) {
-// 	buildID := "testBuildID"
-// 	utils.PrepareTestSetup(utils.GetBuildPath(buildID), "testBuildID")
-// 	cli := utils.GetDockerClient(context.Background())
-// 	err := Build(cli, buildID, "ahsannasir", "testimagename")
-
-// 	if err != nil {
-// 		utils.DestroyTestSetup(utils.GetBuildPath(buildID))
-// 		t.Fatal("Failed: ", err)
-// 	}
-// }
-
-// // Tests behavior of build in case empty image name is sent
-// func TestBuildFail(t *testing.T) {
-// 	buildID := ""
-// 	utils.PrepareTestSetup(utils.GetBuildPath(buildID), "testBuildID")
-// 	cli := utils.GetDockerClient(context.Background())
-// 	err := Build(cli, buildID, "ahsannasir", "testimagename")
-
-// 	if err != nil {
-// 		utils.DestroyTestSetup(utils.GetBuildPath(buildID))
-// 		t.Fatal("Failed: ", err)
-// 	}
-// }
-
 func Test_Builder_Build(t *testing.T) {
 
 	tests := []struct {
@@ -107,11 +81,9 @@ func Test_Builder_Build(t *testing.T) {
 			err = Build(cli, test.buildID, test.repositoryName, test.imageName)
 
 			if err != nil {
-				utils.DestroyTestSetup(utils.GetBuildPath(test.buildID))
-				// t.Fatal("Failed: ", err)
 				err = *new(error)
 			}
-
+			utils.DestroyTestSetup(utils.GetBuildPath(test.buildID))
 			assert.Equal(t, test.errorExpected, err)
 
 		})
