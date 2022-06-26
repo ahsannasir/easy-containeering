@@ -28,7 +28,7 @@ import (
 // }
 
 func Test_ImagePush_Gen_Not_Exists(t *testing.T) {
-	cli := utils.GetDockerClient(context.Background())
+	cli, _ := utils.GetDockerClient(context.Background())
 
 	repository := "ahsannasir"
 	imagename := "notexistsimage"
@@ -43,7 +43,7 @@ func Test_ImagePush_Gen_Not_Exists(t *testing.T) {
 }
 
 func Test_ImagePush_Gen_Wrong_Repo(t *testing.T) {
-	cli := utils.GetDockerClient(context.Background())
+	cli, _ := utils.GetDockerClient(context.Background())
 	repository := "CAPITALLETTERS"
 	imagename := "heycoolimage"
 	buildID := "testbuildid"
@@ -55,7 +55,7 @@ func Test_ImagePush_Gen_Wrong_Repo(t *testing.T) {
 }
 
 func Test_ImagePush_Gen_Wrong_Image(t *testing.T) {
-	cli := utils.GetDockerClient(context.Background())
+	cli, _ := utils.GetDockerClient(context.Background())
 	repository := "ahsannasir"
 	imagename := "HEYCOOLIMAGE"
 	buildID := "testbuildid"

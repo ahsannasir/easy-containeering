@@ -27,7 +27,7 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 		}
 		// get a client to docker daemon
 		ctx := context.Background()
-		cli := utils.GetDockerClient(ctx)
+		cli, _ := utils.GetDockerClient(ctx)
 		go builder.Build(cli, buildID, repository, imagename)
 
 	}

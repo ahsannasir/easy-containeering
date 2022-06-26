@@ -77,7 +77,7 @@ func Test_Builder_Build(t *testing.T) {
 			)
 
 			utils.PrepareTestSetup(utils.GetBuildPath(test.buildID), test.buildID)
-			cli := utils.GetDockerClient(context.Background())
+			cli, err := utils.GetDockerClient(context.Background())
 			err = Build(cli, test.buildID, test.repositoryName, test.imageName)
 
 			if err != nil {

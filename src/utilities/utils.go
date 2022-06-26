@@ -27,11 +27,11 @@ func GetBuildPath(buildID string) string {
 	return "./data/" + buildID
 }
 
-func GetDockerClient(ctx context.Context) *client.Client {
+func GetDockerClient(ctx context.Context) (*client.Client, error) {
 	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	return cli
+	return cli, nil
 }
