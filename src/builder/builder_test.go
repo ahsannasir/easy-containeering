@@ -1,3 +1,5 @@
 package builder
 
-func test_build() {}
+import "testing"
+
+func TestConfigCreateError(t *testing.T) {}

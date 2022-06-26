@@ -19,23 +19,29 @@ var authConfig = types.AuthConfig{
 	ServerAddress: "https://hub.docker.com/",
 }
 
-func ImagePush(dockerClient *client.Client, dockerRegistryUserID string, imagename string, buildID string) error {
-	// dockerRegistryUserID := "ahsannasir"
+// ImagePush: pushes an image build to the repository defined by the user
+func ImagePush(dockerClient *client.Client, registryUserID string, imagename string, buildID string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
 
+	// prepare auth strings to authenticate service to docker repository
 	authConfigBytes, _ := json.Marshal(authConfig)
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
-	tag := dockerRegistryUserID + "/" + imagename
+	// define tags
+	tag := registryUserID + "/" + imagename
+
+	// define push options by encapsulating credentials
 	opts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
+
+	// push image to repository
 	rd, err := dockerClient.ImagePush(ctx, tag, opts)
 	if err != nil {
 		return err
 	}
 
 	defer rd.Close()
-
+	// maintain logs for image push operation
 	err = artifacts.GenLog(rd, utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
 		return err
