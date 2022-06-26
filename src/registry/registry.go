@@ -1,14 +1,13 @@
 package registry
 
 import (
-	"bufio"
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
+	"ml-cicd/src/artifacts"
 	"time"
+
+	utils "ml-cicd/src/utilities"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
@@ -20,7 +19,7 @@ var authConfig = types.AuthConfig{
 	ServerAddress: "https://hub.docker.com/",
 }
 
-func ImagePush(dockerClient *client.Client, dockerRegistryUserID string, imagename string) error {
+func ImagePush(dockerClient *client.Client, dockerRegistryUserID string, imagename string, buildID string) error {
 	// dockerRegistryUserID := "ahsannasir"
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
@@ -37,41 +36,10 @@ func ImagePush(dockerClient *client.Client, dockerRegistryUserID string, imagena
 
 	defer rd.Close()
 
-	err = print(rd)
+	err = artifacts.GenLog(rd, utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-func print(rd io.Reader) error {
-	var lastLine string
-
-	scanner := bufio.NewScanner(rd)
-	for scanner.Scan() {
-		lastLine = scanner.Text()
-		fmt.Println(scanner.Text())
-	}
-
-	errLine := &ErrorLine{}
-	json.Unmarshal([]byte(lastLine), errLine)
-	if errLine.Error != "" {
-		return errors.New(errLine.Error)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-type ErrorLine struct {
-	Error       string      `json:"error"`
-	ErrorDetail ErrorDetail `json:"errorDetail"`
-}
-
-type ErrorDetail struct {
-	Message string `json:"message"`
 }
