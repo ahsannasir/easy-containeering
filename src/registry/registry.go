@@ -20,15 +20,15 @@ var authConfig = types.AuthConfig{
 	ServerAddress: "https://hub.docker.com/",
 }
 
-func ImagePush(dockerClient *client.Client) error {
-	dockerRegistryUserID := "ahsannasir"
+func ImagePush(dockerClient *client.Client, dockerRegistryUserID string, imagename string) error {
+	// dockerRegistryUserID := "ahsannasir"
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
 
 	authConfigBytes, _ := json.Marshal(authConfig)
 	authConfigEncoded := base64.URLEncoding.EncodeToString(authConfigBytes)
 
-	tag := dockerRegistryUserID + "/heycoolimage"
+	tag := dockerRegistryUserID + "/" + imagename
 	opts := types.ImagePushOptions{RegistryAuth: authConfigEncoded}
 	rd, err := dockerClient.ImagePush(ctx, tag, opts)
 	if err != nil {

@@ -20,7 +20,7 @@ import (
 
 var builds = map[string]string{}
 
-func Build(buildID string) error {
+func Build(buildID string, repository string, imagename string) error {
 	ctx := context.Background()
 	cli := getClient(ctx)
 
@@ -34,7 +34,7 @@ func Build(buildID string) error {
 
 	opts := types.ImageBuildOptions{
 		Dockerfile: "Dockerfile",
-		Tags:       []string{"ahsannasir" + "/heycoolimage"},
+		Tags:       []string{repository + "/" + imagename},
 		Remove:     false,
 	}
 	res, err := cli.ImageBuild(ctx, tar, opts)
@@ -50,7 +50,7 @@ func Build(buildID string) error {
 		panic(err)
 	}
 
-	err = registry.ImagePush(cli)
+	err = registry.ImagePush(cli, repository, imagename)
 	if err != nil {
 		builds[buildID] = "failed"
 		panic(err)
