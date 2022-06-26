@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	artifacts "ml-cicd/src/artifacts"
 	builder "ml-cicd/src/builder"
@@ -24,7 +25,10 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.Write([]byte("An Error Occurred!"))
 		}
-		go builder.Build(buildID, repository, imagename)
+		// get a client to docker daemon
+		ctx := context.Background()
+		cli := utils.GetDockerClient(ctx)
+		go builder.Build(cli, buildID, repository, imagename)
 
 	}
 	w.Header().Set("Content-Type", "application/json")

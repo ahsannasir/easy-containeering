@@ -1,1 +1,1 @@
-FROM python2
+FROM hello-world:latest

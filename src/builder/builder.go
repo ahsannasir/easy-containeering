@@ -2,6 +2,7 @@ package builder
 
 import (
 	"context"
+	"fmt"
 	"os"
 
 	artifacts "ml-cicd/src/artifacts"
@@ -9,25 +10,25 @@ import (
 	utils "ml-cicd/src/utilities"
 
 	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/stdcopy"
 )
 
 // Build: Initiates a docker image build
-func Build(buildID string, repository string, imagename string) error {
+func Build(cli *client.Client, buildID string, repository string, imagename string) error {
 	ctx := context.Background()
-
-	// get a client to docker daemon
-	cli := utils.GetDockerClient(ctx)
 
 	// maintain build status 0 means "running"
 	utils.SetBuildStatus(buildID, 0)
 
 	// create a tar of the files submitted to further create an image out of it
-	tar, err := archive.TarWithOptions("./data/"+buildID+"/", &archive.TarOptions{})
+	tar, err := archive.TarWithOptions(utils.GetBuildPath(buildID)+"/", &archive.TarOptions{})
 	if err != nil {
-		panic(err)
+
+		return err
 	}
+	fmt.Println(utils.GetBuildPath(buildID))
 	// io.Copy(os.Stdout, tar)
 	// provider build options, image details
 	opts := types.ImageBuildOptions{
@@ -41,7 +42,7 @@ func Build(buildID string, repository string, imagename string) error {
 	res, err := cli.ImageBuild(ctx, tar, opts)
 	if err != nil {
 		utils.SetBuildStatus(buildID, 2)
-		panic(err)
+		return err
 	}
 
 	defer res.Body.Close()
@@ -50,14 +51,14 @@ func Build(buildID string, repository string, imagename string) error {
 	stdcopy.StdCopy(os.Stdout, os.Stderr, res.Body)
 	err = artifacts.GenLog(res.Body, utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// Finally push this image to the docker repository configured by the user
 	err = registry.ImagePush(cli, repository, imagename, buildID)
 	if err != nil {
 		utils.SetBuildStatus(buildID, 2)
-		panic(err)
+		return err
 	}
 
 	// set build status to "success" of everthing went as expected
