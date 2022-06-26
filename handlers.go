@@ -20,7 +20,7 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 		file, handler, err := r.FormFile("Dockerfile")
 		defer file.Close()
 
-		err := artifacts.GenArtifacts(file, handler, buildID)
+		err = artifacts.GenArtifacts(file, handler, buildID)
 		if err != nil {
 			w.Write([]byte("An Error Occurred!"))
 		}
