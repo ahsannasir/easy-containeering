@@ -1,107 +1,67 @@
 package builder
 
 import (
-	"bufio"
 	"context"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"io"
 	"os"
 
 	artifacts "ml-cicd/src/artifacts"
 	registry "ml-cicd/src/registry"
+	utils "ml-cicd/src/utilities"
 
 	"github.com/docker/docker/api/types"
-	"github.com/docker/docker/client"
 	"github.com/docker/docker/pkg/archive"
 	"github.com/docker/docker/pkg/stdcopy"
 )
 
-var builds = map[string]string{}
-
+// Build: Initiates a docker image build
 func Build(buildID string, repository string, imagename string) error {
 	ctx := context.Background()
-	cli := getClient(ctx)
 
-	builds[buildID] = "running"
+	// get a client to docker daemon
+	cli := utils.GetDockerClient(ctx)
 
+	// maintain build status 0 means "running"
+	utils.SetBuildStatus(buildID, 0)
+
+	// create a tar of the files submitted to further create an image out of it
 	tar, err := archive.TarWithOptions("./data/"+buildID+"/", &archive.TarOptions{})
 	if err != nil {
 		panic(err)
 	}
 	// io.Copy(os.Stdout, tar)
-
+	// provider build options, image details
 	opts := types.ImageBuildOptions{
 		Dockerfile: "Dockerfile",
 		Tags:       []string{repository + "/" + imagename},
 		Remove:     false,
 	}
+
+	// finally build our image
+	// equivalent to "docker build -t {{image_name}} ."
 	res, err := cli.ImageBuild(ctx, tar, opts)
 	if err != nil {
-		builds[buildID] = "failed"
+		utils.SetBuildStatus(buildID, 2)
 		panic(err)
 	}
 
 	defer res.Body.Close()
+
+	// Route build output
 	stdcopy.StdCopy(os.Stdout, os.Stderr, res.Body)
-	err = print(res.Body, buildID)
+	err = artifacts.GenLog(res.Body, utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
 		panic(err)
 	}
 
-	err = registry.ImagePush(cli, repository, imagename)
+	// Finally push this image to the docker repository configured by the user
+	err = registry.ImagePush(cli, repository, imagename, buildID)
 	if err != nil {
-		builds[buildID] = "failed"
+		utils.SetBuildStatus(buildID, 2)
 		panic(err)
 	}
 
-	builds[buildID] = "success"
+	// set build status to "success" of everthing went as expected
+	utils.SetBuildStatus(buildID, 1)
 
 	return err
-}
-
-func Status(buildID string) string {
-	return builds[buildID]
-}
-
-func getClient(ctx context.Context) *client.Client {
-	cli, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
-	if err != nil {
-		panic(err)
-	}
-
-	return cli
-}
-
-func print(rd io.Reader, imageName string) error {
-	var lastLine string
-
-	scanner := bufio.NewScanner(rd)
-	for scanner.Scan() {
-		lastLine = scanner.Text()
-		fmt.Println(scanner.Text())
-		artifacts.Log(imageName, scanner.Text()+"\n")
-	}
-
-	errLine := &ErrorLine{}
-	json.Unmarshal([]byte(lastLine), errLine)
-	if errLine.Error != "" {
-		return errors.New(errLine.Error)
-	}
-
-	if err := scanner.Err(); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-type ErrorLine struct {
-	Error       string      `json:"error"`
-	ErrorDetail ErrorDetail `json:"errorDetail"`
-}
-
-type ErrorDetail struct {
-	Message string `json:"message"`
 }
