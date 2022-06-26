@@ -26,5 +26,5 @@ func PrepareTestSetup(path string, buildID string) error {
 }
 
 func DestroyTestSetup(path string) {
-	os.RemoveAll(path)
+	os.RemoveAll(path + "/")
 }

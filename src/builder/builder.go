@@ -2,6 +2,7 @@ package builder
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 
@@ -17,8 +18,18 @@ import (
 
 // Build: Initiates a docker image build
 func Build(cli *client.Client, buildID string, repository string, imagename string) error {
-	ctx := context.Background()
 
+	if buildID == "" {
+		return errors.New("No valid build ID provided")
+	}
+	if repository == "" {
+		return errors.New("No valid repository ID provided")
+	}
+	if imagename == "" {
+		return errors.New("No valid imagename ID provided")
+	}
+
+	ctx := context.Background()
 	// maintain build status 0 means "running"
 	utils.SetBuildStatus(buildID, 0)
 

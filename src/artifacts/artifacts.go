@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"mime/multipart"
 	"os"
@@ -35,15 +34,13 @@ func GenLog(rd io.Reader, path string) error {
 	var lastLine string
 
 	scanner := bufio.NewScanner(rd)
+	f, err := os.OpenFile(path+".txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer f.Close()
 	for scanner.Scan() {
 		lastLine = scanner.Text()
-		fmt.Println(scanner.Text())
-		f, err := os.OpenFile(path+".txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			panic(err)
-		}
-
-		defer f.Close()
 
 		if _, err = f.WriteString(scanner.Text() + "\n"); err != nil {
 			panic(err)
