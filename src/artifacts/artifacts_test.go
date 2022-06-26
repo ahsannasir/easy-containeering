@@ -58,16 +58,18 @@ func Test_Artifacts_Gen_Log(t *testing.T) {
 }
 
 func Test_Artifacts_Fetch_Log(t *testing.T) {
-	err := GenLog(strings.NewReader("hey cool logs!"), utils.GetBuildPath("testBuildId"))
+	buildID := "testBuildId"
+	os.MkdirAll(utils.GetBuildPath(buildID)+"/"+buildID, os.ModePerm)
+	err := GenLog(strings.NewReader("hey cool logs!"), utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}
-	logs, err := FetchLog("testBuildId")
+	logs, err := FetchLog(buildID)
 	if err != nil && logs == "" {
 		t.Fatal("Failed: ", err)
 	}
 	if !strings.Contains(logs, "hey cool logs!") {
 		t.Fatal("Failed: Unequal strings!")
 	}
-	utils.DestroyTestSetup(utils.GetBuildPath("testBuildId"))
+	utils.DestroyTestSetup(utils.GetBuildPath(buildID) + "/" + buildID)
 }

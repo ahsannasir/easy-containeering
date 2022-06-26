@@ -37,7 +37,12 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 
 func getlogger(w http.ResponseWriter, r *http.Request) {
 	keyVal := r.URL.Query()["build_id"][0]
-	w.Write([]byte(artifacts.FetchLog(keyVal)))
+	logs, err := artifacts.FetchLog(keyVal)
+	if err != nil {
+		w.Write([]byte("An Error Occurred"))
+	}
+	w.Write([]byte(logs))
+
 }
 
 func getstatus(w http.ResponseWriter, r *http.Request) {

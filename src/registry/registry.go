@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"ml-cicd/src/artifacts"
 	"time"
 
@@ -21,6 +22,10 @@ var authConfig = types.AuthConfig{
 
 // ImagePush: pushes an image build to the repository defined by the user
 func ImagePush(dockerClient *client.Client, registryUserID string, imagename string, buildID string) error {
+
+	if dockerClient == nil {
+		return errors.New("Invalid Client Received!")
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
 

@@ -1,1 +1,1 @@
-FROM hello-world:latest
+FROM golang:latest

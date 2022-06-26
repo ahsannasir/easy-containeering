@@ -60,7 +60,7 @@ func GenLog(rd io.Reader, path string) error {
 }
 
 func FetchLog(buildID string) (string, error) {
-	dat, err := os.ReadFile(utils.GetBuildPath(buildID) + ".txt")
+	dat, err := os.ReadFile(utils.GetBuildPath(buildID) + "/" + buildID + ".txt")
 	if err != nil {
 		return "", err
 	}
