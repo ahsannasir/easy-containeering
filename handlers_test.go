@@ -39,7 +39,7 @@ func Test_Publish(t *testing.T) {
 // Test_Get_Logs: Tests wether a particular builds logs are successfully fetched
 // uses a test build_id to fetch logs and test passes if there are no failures during fetch
 func Test_Get_Logs(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/api/logs?build_id=01bd583b-87c0-4365-a8b5-2f3a2325f026", nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/logs?build_id=03fbbda8-4454-499c-8a30-d4322cf688eb", nil)
 	w := httptest.NewRecorder()
 	getlogger(w, req)
 	res := w.Result()

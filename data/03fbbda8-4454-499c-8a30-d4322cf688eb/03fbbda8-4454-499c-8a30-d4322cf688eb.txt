@@ -1,0 +1,29 @@
+{"stream":" ---\u003e 0f95b1e38607\n"}
+{"aux":{"ID":"sha256:0f95b1e38607bbf15b19ad0d111f2316e92eb047a35370eac71973c636acb9d2"}}
+{"stream":"Successfully built 0f95b1e38607\n"}
+{"stream":"Successfully tagged ahsannasir/pyhoncontained:latest\n"}
+{"status":"The push refers to repository [docker.io/ahsannasir/pyhoncontained]"}
+{"status":"Preparing","progressDetail":{},"id":"a84ac09f498f"}
+{"status":"Preparing","progressDetail":{},"id":"9d17ba627a77"}
+{"status":"Preparing","progressDetail":{},"id":"a8db90eb5ce0"}
+{"status":"Preparing","progressDetail":{},"id":"ca5c6d5c3d01"}
+{"status":"Preparing","progressDetail":{},"id":"33a247b4fc52"}
+{"status":"Preparing","progressDetail":{},"id":"5afd661c6106"}
+{"status":"Preparing","progressDetail":{},"id":"66183893ba24"}
+{"status":"Preparing","progressDetail":{},"id":"6840c8ff46bd"}
+{"status":"Preparing","progressDetail":{},"id":"97d5fec864d8"}
+{"status":"Waiting","progressDetail":{},"id":"5afd661c6106"}
+{"status":"Waiting","progressDetail":{},"id":"66183893ba24"}
+{"status":"Waiting","progressDetail":{},"id":"6840c8ff46bd"}
+{"status":"Waiting","progressDetail":{},"id":"97d5fec864d8"}
+{"status":"Layer already exists","progressDetail":{},"id":"a8db90eb5ce0"}
+{"status":"Layer already exists","progressDetail":{},"id":"9d17ba627a77"}
+{"status":"Layer already exists","progressDetail":{},"id":"a84ac09f498f"}
+{"status":"Layer already exists","progressDetail":{},"id":"ca5c6d5c3d01"}
+{"status":"Layer already exists","progressDetail":{},"id":"33a247b4fc52"}
+{"status":"Layer already exists","progressDetail":{},"id":"5afd661c6106"}
+{"status":"Layer already exists","progressDetail":{},"id":"66183893ba24"}
+{"status":"Layer already exists","progressDetail":{},"id":"97d5fec864d8"}
+{"status":"Layer already exists","progressDetail":{},"id":"6840c8ff46bd"}
+{"status":"latest: digest: sha256:850b7f7626e5ca9822cc9ac36ce1f712930d8c87eb31b5937dba4037fe204034 size: 2218"}
+{"progressDetail":{},"aux":{"Tag":"latest","Digest":"sha256:850b7f7626e5ca9822cc9ac36ce1f712930d8c87eb31b5937dba4037fe204034","Size":2218}}
