@@ -15,4 +15,13 @@ docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -p 5433:5433 mlcicd
 # API
 
 POST /api/publish
-    formdata
+GET /api/logs?build_id=
+GET /api/status?build_id=
+
+# Workflow Diagram
+
+![workflow](./workflow.png)
+
+# Code Architecture
+
+![architecture](./codearch.png)
