@@ -21,6 +21,13 @@ ok  	ml-cicd/src/builder	5.092s	coverage: 85.2% of statements
 ok  	ml-cicd/src/registry	0.966s	coverage: 93.8% of statements
 ok  	ml-cicd/src/utilities	0.539s	coverage: 90.0% of statements
 ```
+# Workflow Diagram
+
+![workflow](./workflow.png)
+
+# Code Architecture
+
+![architecture](./codearch.svg)
 
 # API
 ### Publish
@@ -58,10 +65,4 @@ POST /api/publish
 GET /api/logs?build_id=
 GET /api/status?build_id=
 
-# Workflow Diagram
 
-![workflow](./workflow.png)
-
-# Code Architecture
-
-![architecture](./codearch.svg)
