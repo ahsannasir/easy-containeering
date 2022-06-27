@@ -20,11 +20,11 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 		// find a file submitted as a form
 		file, handler, err := r.FormFile("Dockerfile")
 		defer file.Close()
-
-		err = artifacts.GenArtifacts(file, handler.Filename, buildID)
-		if err != nil {
+		if err != nil || file == nil {
 			w.Write([]byte("An Error Occurred!"))
 		}
+		err = artifacts.GenArtifacts(file, handler.Filename, buildID)
+
 		// get a client to docker daemon
 		ctx := context.Background()
 		cli, _ := utils.GetDockerClient(ctx)
