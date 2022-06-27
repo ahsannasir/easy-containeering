@@ -2,17 +2,23 @@ package artifacts
 
 import (
 	"bufio"
+	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
+
+	extract "github.com/codeclysm/extract"
 
 	er "ml-cicd/api/types"
 	utils "ml-cicd/src/utilities"
 )
 
 // GenArtifacts: This function generates a file adapted to custom mechanisms
-func GenArtifacts(file io.Reader, filename string, buildID string) error {
+func GenArtifacts(file io.Reader, filename string, buildID string, isTar bool) error {
 
 	// Create a Directory for build if it doesn't exist
 	os.MkdirAll(utils.GetBuildPath(buildID), os.ModePerm)
@@ -25,6 +31,17 @@ func GenArtifacts(file io.Reader, filename string, buildID string) error {
 
 	defer f.Close()
 	io.Copy(f, file)
+
+	// if its a tar file
+	if isTar {
+		data, _ := ioutil.ReadFile(utils.GetBuildPath(buildID) + "/" + filename)
+		buffer := bytes.NewBuffer(data)
+		err := extract.Gz(context.Background(), buffer, utils.GetBuildPath(buildID)+"/", nil)
+		// = extract.Gz(context.Background(), file, utils.GetBuildPath(buildID)+"/", nil)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
 	return err
 }
 

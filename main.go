@@ -29,7 +29,7 @@ func main() {
 	http.HandleFunc("/api/logs", getlogger)
 	// returns build statuses
 	http.HandleFunc("/api/status", getstatus)
-
+	http.HandleFunc("/api/publishtar", publisherWithTar)
 	initiateServer()
 }
 

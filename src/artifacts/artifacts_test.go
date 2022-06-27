@@ -18,7 +18,7 @@ func Test_Artifacts_Gen(t *testing.T) {
 	}
 	defer file.Close()
 
-	err = GenArtifacts(file, "Dockerfile", "testBuildId")
+	err = GenArtifacts(file, "Dockerfile", "testBuildId", false)
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}
@@ -33,7 +33,7 @@ func Test_Artifacts_Gen_SameContent(t *testing.T) {
 	}
 	defer file.Close()
 
-	err = GenArtifacts(file, "Dockerfile", "testBuildId")
+	err = GenArtifacts(file, "Dockerfile", "testBuildId", false)
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}

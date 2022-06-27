@@ -3,7 +3,6 @@ package builder
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 
 	artifacts "ml-cicd/src/artifacts"
@@ -33,13 +32,15 @@ func Build(cli *client.Client, buildID string, repository string, imagename stri
 	// maintain build status 0 means "running"
 	utils.SetBuildStatus(buildID, 0)
 
+	// filepath.WalkDir(utils.GetBuildPath(buildID)+"/", walk)
+
 	// create a tar of the files submitted to further create an image out of it
 	tar, err := archive.TarWithOptions(utils.GetBuildPath(buildID)+"/", &archive.TarOptions{})
 	if err != nil {
 
 		return err
 	}
-	fmt.Println(utils.GetBuildPath(buildID))
+	// fmt.Println(utils.GetBuildPath(buildID))
 	// io.Copy(os.Stdout, tar)
 	// provider build options, image details
 	opts := types.ImageBuildOptions{
@@ -77,3 +78,14 @@ func Build(cli *client.Client, buildID string, repository string, imagename stri
 
 	return err
 }
+
+// func walk(s string, d fs.DirEntry, err error) error {
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if !d.IsDir() {
+// 		println(s)
+// 		if
+// 	}
+// 	return nil
+// }
