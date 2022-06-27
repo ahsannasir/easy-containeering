@@ -9,6 +9,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	auth "ml-cicd/auth"
 )
 
 func main() {
@@ -23,6 +25,10 @@ func main() {
 
 	// returns build statuses
 	http.HandleFunc("/api/status", getstatus)
+
+	// Sign IN
+	http.HandleFunc("/api/signin", auth.Signin)
+
 	initiateServer()
 }
 

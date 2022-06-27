@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	auth "ml-cicd/auth"
 	artifacts "ml-cicd/src/artifacts"
 	builder "ml-cicd/src/builder"
 	utils "ml-cicd/src/utilities"
@@ -13,6 +14,7 @@ import (
 
 func publisher(w http.ResponseWriter, r *http.Request) {
 	buildID := uuid.New().String()
+	auth.Verify(w, r)
 	if r.Method == "POST" {
 
 		repository := r.FormValue("repository")

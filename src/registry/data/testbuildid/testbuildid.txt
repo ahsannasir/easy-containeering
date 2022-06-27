@@ -14,3 +14,5 @@
 {"errorDetail":{"message":"An image does not exist locally with the tag: ahsannasir/notexistsimage"},"error":"An image does not exist locally with the tag: ahsannasir/notexistsimage"}
 {"status":"The push refers to repository [docker.io/ahsannasir/notexistsimage]"}
 {"errorDetail":{"message":"An image does not exist locally with the tag: ahsannasir/notexistsimage"},"error":"An image does not exist locally with the tag: ahsannasir/notexistsimage"}
+{"status":"The push refers to repository [docker.io/ahsannasir/notexistsimage]"}
+{"errorDetail":{"message":"An image does not exist locally with the tag: ahsannasir/notexistsimage"},"error":"An image does not exist locally with the tag: ahsannasir/notexistsimage"}
