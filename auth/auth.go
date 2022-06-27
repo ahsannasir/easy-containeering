@@ -120,4 +120,5 @@ func Verify(w http.ResponseWriter, r *http.Request) error {
 		w.WriteHeader(http.StatusUnauthorized)
 		return err
 	}
+	return nil
 }
