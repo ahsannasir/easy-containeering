@@ -22,7 +22,7 @@ func Test_Artifacts_Gen(t *testing.T) {
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}
-	utils.DestroyTestSetup(utils.GetBuildPath("testBuildId"))
+	DestroyTestSetup(utils.GetBuildPath("testBuildId"))
 }
 
 func Test_Artifacts_Gen_SameContent(t *testing.T) {
@@ -47,14 +47,14 @@ func Test_Artifacts_Gen_SameContent(t *testing.T) {
 	if bytes.Equal(f1, f2) == false {
 		t.Fatal("Failed: Different files were generated")
 	}
-	utils.DestroyTestSetup(utils.GetBuildPath("testBuildId"))
+	DestroyTestSetup(utils.GetBuildPath("testBuildId"))
 }
 func Test_Artifacts_Gen_Log(t *testing.T) {
 	err := GenLog(strings.NewReader("hey cool logs!"), utils.GetBuildPath("testBuildId"))
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}
-	utils.DestroyTestSetup(utils.GetBuildPath("testBuildId"))
+	DestroyTestSetup(utils.GetBuildPath("testBuildId"))
 }
 
 func Test_Artifacts_Fetch_Log(t *testing.T) {
@@ -71,5 +71,9 @@ func Test_Artifacts_Fetch_Log(t *testing.T) {
 	if !strings.Contains(logs, "hey cool logs!") {
 		t.Fatal("Failed: Unequal strings!")
 	}
-	utils.DestroyTestSetup(utils.GetBuildPath(buildID) + "/" + buildID)
+	DestroyTestSetup(utils.GetBuildPath(buildID) + "/" + buildID)
+}
+
+func DestroyTestSetup(path string) {
+	os.RemoveAll(path + "/")
 }
