@@ -17,6 +17,7 @@ import (
 )
 
 // Build: Initiates a docker image build
+// Typicaly called as a go-routine from http handlers to unblock API calls
 func Build(cli *client.Client, buildID string, repository string, imagename string) error {
 
 	if buildID == "" {
@@ -29,7 +30,6 @@ func Build(cli *client.Client, buildID string, repository string, imagename stri
 		return errors.New("No valid imagename ID provided")
 	}
 
-	ctx := context.Background()
 	// maintain build status 0 means "running"
 	utils.SetBuildStatus(buildID, 0)
 
@@ -50,7 +50,7 @@ func Build(cli *client.Client, buildID string, repository string, imagename stri
 
 	// finally build our image
 	// equivalent to "docker build -t {{image_name}} ."
-	res, err := cli.ImageBuild(ctx, tar, opts)
+	res, err := cli.ImageBuild(context.Background(), tar, opts)
 	if err != nil {
 		utils.SetBuildStatus(buildID, 2)
 		return err

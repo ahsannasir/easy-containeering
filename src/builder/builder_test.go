@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// Test_Builder_Build: Intelligently creates different possible inputs for build function
+// and tests by passing in expected output and error values on different use cases.
 func Test_Builder_Build(t *testing.T) {
 
 	tests := []struct {

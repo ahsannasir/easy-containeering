@@ -61,6 +61,9 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 // logs can be fetched during the build run or after the build has succeeded
 func getlogger(w http.ResponseWriter, r *http.Request) {
 	keyVal := r.URL.Query()["build_id"][0]
+	if keyVal == "" {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 	logs, err := artifacts.FetchLog(keyVal)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -73,6 +76,9 @@ func getlogger(w http.ResponseWriter, r *http.Request) {
 // Build Status can be "running", "failed" or "success" depending upon the build progress.
 func getstatus(w http.ResponseWriter, r *http.Request) {
 	keyVal := r.URL.Query()["build_id"][0]
+	if keyVal == "" {
+		w.WriteHeader(http.StatusBadRequest)
+	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"build_status": utils.GetBuildStatus(keyVal)})
 }
