@@ -20,7 +20,10 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 	buildID := uuid.New().String()
 
 	// this ensures publisher only works if user is authenticated
-	auth.Verify(w, r)
+	err := auth.Verify(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "POST" {
 
 		// fetch form fields
@@ -60,6 +63,11 @@ func publisher(w http.ResponseWriter, r *http.Request) {
 // getLogger: An API handler that allows fetching the logs of a particular build process
 // logs can be fetched during the build run or after the build has succeeded
 func getlogger(w http.ResponseWriter, r *http.Request) {
+	// this ensures getlogger only works if user is authenticated
+	err := auth.Verify(w, r)
+	if err != nil {
+		return
+	}
 	keyVal := r.URL.Query()["build_id"][0]
 	if keyVal == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -75,6 +83,11 @@ func getlogger(w http.ResponseWriter, r *http.Request) {
 // getstatus: An API handler that fetches the status of concurrent build.
 // Build Status can be "running", "failed" or "success" depending upon the build progress.
 func getstatus(w http.ResponseWriter, r *http.Request) {
+	// this ensures getstatus only works if user is authenticated
+	err := auth.Verify(w, r)
+	if err != nil {
+		return
+	}
 	keyVal := r.URL.Query()["build_id"][0]
 	if keyVal == "" {
 		w.WriteHeader(http.StatusBadRequest)

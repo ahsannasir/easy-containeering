@@ -81,18 +81,18 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func Verify(w http.ResponseWriter, r *http.Request) {
+func Verify(w http.ResponseWriter, r *http.Request) error {
 	c, err := r.Cookie("token")
 
 	if err != nil {
 		if err == http.ErrNoCookie {
 			// If the cookie is not set, return an unauthorized status
 			w.WriteHeader(http.StatusUnauthorized)
-			return
+			return err
 		}
 		// For any other type of error, return a bad request status
 		w.WriteHeader(http.StatusBadRequest)
-		return
+		return err
 	}
 
 	// Get the JWT string from the cookie
@@ -111,13 +111,13 @@ func Verify(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
 			w.WriteHeader(http.StatusUnauthorized)
-			return
+			return err
 		}
 		w.WriteHeader(http.StatusBadRequest)
-		return
+		return err
 	}
 	if !tkn.Valid {
 		w.WriteHeader(http.StatusUnauthorized)
-		return
+		return err
 	}
 }
