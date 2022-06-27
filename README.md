@@ -23,6 +23,36 @@ ok  	ml-cicd/src/utilities	0.539s	coverage: 90.0% of statements
 ```
 
 # API
+### Publish
+Allows publlishes a dockerfile to build its image and push it to the docker registry.
+```
+POST /api/publish
+```
+
+### Get Status
+Returns status of the build currently running, succeeded or failed.
+```
+GET /api/status?build_id={{build_id}}
+```
+
+### Get Logs
+Returns logs or a running or complete image build and push.
+```
+GET /api/logs?build_id={{build_id}}
+```
+### Sign in
+Allows user to sign in to the API
+```
+POST /api/signin
+username
+password
+```
+### /api/publish 
+Allows publlishes a dockerfile to build its image and push it to the docker registry.
+```
+POST /api/publish
+```
+
 
 POST /api/publish
 GET /api/logs?build_id=
