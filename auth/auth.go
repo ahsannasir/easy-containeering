@@ -1,15 +1,11 @@
 package auth
 
 import (
-	//...
-	// import the jwt-go library
 	"encoding/json"
 	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	// "github.com/dgrijalva/jwt-go"
-	//...
 )
 
 // Create the JWT key used to create the signature
