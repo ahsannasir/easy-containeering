@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	auth "ml-cicd/auth"
+	"ml-cicd/src/registry"
 )
 
 // “In your company there are many data scientists, who train deep learning models. They use different ML frameworks such as TensorFlow, PyTorch, scikit-learn, etc.
@@ -15,13 +17,18 @@ import (
 // build might take some time. For the purpose of this assignment, it can be assumed that the service and Docker daemon run on the same machine.”
 
 func main() {
-
 	fmt.Println("Welcome to the ML-CICD Service!")
+
+	// Setting registry auth
+	if os.Getenv("REG_USERNAME") == "" || os.Getenv("REG_PASSWORD") == "" {
+		fmt.Println("Please provide registry username and password as env variables.")
+		return
+	}
+	registry.SetRegistryAuth(os.Getenv("REG_USERNAME"), os.Getenv("REG_PASSWORD"))
 
 	// Authentication
 	// ensures a secure authentication mechanism in API
 	http.HandleFunc("/api/signin", auth.Signin)
-
 	// Image Builder and Pushers
 	// publishes a build job
 	http.HandleFunc("/api/publish", publisher)

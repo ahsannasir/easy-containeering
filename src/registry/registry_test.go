@@ -29,11 +29,11 @@ import (
 
 func Test_ImagePush_Gen_Not_Exists(t *testing.T) {
 	cli, _ := utils.GetDockerClient(context.Background())
-
 	repository := "ahsannasir"
 	imagename := "notexistsimage"
 	buildID := "testbuildid"
 	os.MkdirAll(utils.GetBuildPath(buildID)+"/"+buildID, os.ModePerm)
+	initReg()
 	// Finally push this image to the docker repository configured by the user
 	err := ImagePush(cli, repository, imagename, buildID)
 	if err == nil {
@@ -47,6 +47,7 @@ func Test_ImagePush_Gen_Wrong_Repo(t *testing.T) {
 	repository := "CAPITALLETTERS"
 	imagename := "heycoolimage"
 	buildID := "testbuildid"
+	initReg()
 	// Finally push this image to the docker repository configured by the user
 	err := ImagePush(cli, repository, imagename, buildID)
 	if err == nil {
@@ -59,6 +60,7 @@ func Test_ImagePush_Gen_Wrong_Image(t *testing.T) {
 	repository := "ahsannasir"
 	imagename := "HEYCOOLIMAGE"
 	buildID := "testbuildid"
+	initReg()
 	// Finally push this image to the docker repository configured by the user
 	err := ImagePush(cli, repository, imagename, buildID)
 	if err == nil {
@@ -70,9 +72,14 @@ func Test_ImagePush_Wrong_client(t *testing.T) {
 	repository := "ahsannasir"
 	imagename := "HEYCOOLIMAGE"
 	buildID := "testbuildid"
+	initReg()
 	// Finally push this image to the docker repository configured by the user
 	err := ImagePush(nil, repository, imagename, buildID)
 	if err == nil {
 		t.Fatal("Test Failed: Client should be valid!")
 	}
+}
+
+func initReg() {
+	SetRegistryAuth("ahsannasir", "playstationxbox1")
 }

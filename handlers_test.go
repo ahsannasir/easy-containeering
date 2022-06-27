@@ -11,6 +11,8 @@ import (
 	"net/http/httptest"
 	"os"
 	"testing"
+
+	registry "ml-cicd/src/registry"
 )
 
 var buildID string
@@ -20,6 +22,7 @@ var buildID string
 // that is then used to call the "publisher" handler.
 // Test passes if build is successfully initiated and returns a bulid_id
 func Test_Publish(t *testing.T) {
+	initReg()
 	request, w, err := publishBuild()
 	publisher(w, request)
 	res := w.Result()
@@ -27,6 +30,7 @@ func Test_Publish(t *testing.T) {
 	if err != nil {
 		t.Fatal("Failed: ", err)
 	}
+	// fmt.Println(string(res.Body))
 	data := make(map[string]string)
 	_ = json.NewDecoder(res.Body).Decode(&data)
 	if data != nil && data["build_id"] != "" {
@@ -39,6 +43,7 @@ func Test_Publish(t *testing.T) {
 // Test_Get_Logs: Tests wether a particular builds logs are successfully fetched
 // uses a test build_id to fetch logs and test passes if there are no failures during fetch
 func Test_Get_Logs(t *testing.T) {
+	initReg()
 	req := httptest.NewRequest(http.MethodGet, "/api/logs?build_id=03fbbda8-4454-499c-8a30-d4322cf688eb", nil)
 	w := httptest.NewRecorder()
 	getlogger(w, req)
@@ -59,7 +64,7 @@ func Test_Get_Logs(t *testing.T) {
 // publishes a build and fetches its status
 // Test passes if expected status is received
 func Test_Get_Status(t *testing.T) {
-
+	initReg()
 	request, w, err := publishBuild()
 	publisher(w, request)
 	res := w.Result()
@@ -127,4 +132,7 @@ func publishBuild() (*http.Request, *httptest.ResponseRecorder, error) {
 	w := httptest.NewRecorder()
 
 	return request, w, nil
+}
+func initReg() {
+	registry.SetRegistryAuth("ahsannasir", "playstationxbox1")
 }

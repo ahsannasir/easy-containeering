@@ -9,7 +9,7 @@ docker build -t mlcicd .
 Use following command so your local docker daemon can be accessed from within the container
 
 ```
-docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -p 5433:5433 mlcicd
+docker run -ti -v /var/run/docker.sock:/var/run/docker.sock -e REG_USERNAME={{registryusername}} -e REG_PASSWORD={{registrypassword}} -p 5433:5433 mlcicd
 ```
 ### Testing Coverage
 > on average, > 80% for actual implementation tests

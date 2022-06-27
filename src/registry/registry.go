@@ -14,16 +14,21 @@ import (
 	"github.com/docker/docker/client"
 )
 
-var authConfig = types.AuthConfig{
-	Username:      "ahsannasir",
-	Password:      "playstationxbox1",
-	ServerAddress: "https://hub.docker.com/",
+var authConfig types.AuthConfig
+
+func SetRegistryAuth(username string, password string) {
+	authConfig = types.AuthConfig{
+		Username:      username,
+		Password:      password,
+		ServerAddress: "https://hub.docker.com/",
+	}
 }
 
 // ImagePush: pushes an image build to the repository defined by the user
 func ImagePush(dockerClient *client.Client, registryUserID string, imagename string, buildID string) error {
 
 	if dockerClient == nil {
+		utils.SetBuildStatus(buildID, 2)
 		return errors.New("Invalid Client Received!")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
@@ -42,6 +47,7 @@ func ImagePush(dockerClient *client.Client, registryUserID string, imagename str
 	// push image to repository
 	rd, err := dockerClient.ImagePush(ctx, tag, opts)
 	if err != nil {
+		utils.SetBuildStatus(buildID, 2)
 		return err
 	}
 
@@ -49,6 +55,7 @@ func ImagePush(dockerClient *client.Client, registryUserID string, imagename str
 	// maintain logs for image push operation
 	err = artifacts.GenLog(rd, utils.GetBuildPath(buildID)+"/"+buildID)
 	if err != nil {
+		utils.SetBuildStatus(buildID, 2)
 		return err
 	}
 

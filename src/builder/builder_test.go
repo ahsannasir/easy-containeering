@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	"ml-cicd/src/registry"
 	utils "ml-cicd/src/utilities"
 
 	"github.com/stretchr/testify/assert"
@@ -111,6 +112,7 @@ func PrepareTestSetup(path string, buildID string) error {
 	if err != nil {
 		return err //please dont
 	}
+	registry.SetRegistryAuth("ahsannasir", "playstationxbox1")
 	// fmt.Println(string(file))
 	defer file.Close()
 	io.Copy(f, file)
