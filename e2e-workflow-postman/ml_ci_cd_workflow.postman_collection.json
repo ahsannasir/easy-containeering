@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "da7b7199-96e6-4798-bee7-15abb55c3e33",
+		"name": "ml_ci_cd_workflow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Sign In",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\":\"user1\",\"password\":\"password1\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5433/api/signin",
+					"host": [
+						"localhost"
+					],
+					"port": "5433",
+					"path": [
+						"api",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Publish Build",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password1",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Dockerfile",
+							"type": "file",
+							"src": "/Users/I547600/easy-containeering/resources/Dockerfile"
+						},
+						{
+							"key": "name",
+							"value": "pyhoncontained",
+							"type": "text"
+						},
+						{
+							"key": "repository",
+							"value": "ahsannasir",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5433/api/publish",
+					"host": [
+						"localhost"
+					],
+					"port": "5433",
+					"path": [
+						"api",
+						"publish"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5433/api/logs?build_id=813fd572-9957-4120-8e53-9a790a4eb1c9",
+					"host": [
+						"localhost"
+					],
+					"port": "5433",
+					"path": [
+						"api",
+						"logs"
+					],
+					"query": [
+						{
+							"key": "build_id",
+							"value": "813fd572-9957-4120-8e53-9a790a4eb1c9"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
