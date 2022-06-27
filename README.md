@@ -30,8 +30,8 @@ GET /api/status?build_id=
 
 # Workflow Diagram
 
-![workflow](./workflow.png)
+![workflow](./workflow.svg)
 
 # Code Architecture
 
-![architecture](./codearch.png)
+![architecture](./codearch.svg)
